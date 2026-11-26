@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a1460"/>
+      <stop offset="0.6" stop-color="#7a1f9e"/>
+      <stop offset="1" stop-color="#c4238f"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe08a"/>
+      <stop offset="1" stop-color="#e0a020"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.45" r="0.5">
+      <stop offset="0" stop-color="#ff7be0" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ff7be0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="54" fill="url(#bg)"/>
+  <circle cx="128" cy="124" r="104" fill="url(#glow)"/>
+  <!-- d20 silhouette: hexagon with the front faces -->
+  <g fill="none" stroke="#f6ecff" stroke-width="9" stroke-linejoin="round">
+    <polygon points="128,30 213,79 213,177 128,226 43,177 43,79"/>
+    <polygon points="128,72 182,164 74,164"/>
+    <path d="M128,30 L128,72 M213,79 L182,164 M43,79 L74,164 M128,72 L43,79 M128,72 L213,79 M74,164 L128,226 L182,164 M213,177 L182,164 M43,177 L74,164"/>
+  </g>
+  <!-- the gold inlay on the front face -->
+  <polygon points="128,94 163,154 93,154" fill="url(#gold)" stroke="#fff3c4" stroke-width="3" stroke-linejoin="round"/>
+</svg>

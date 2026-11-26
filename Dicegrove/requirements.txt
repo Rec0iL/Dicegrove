@@ -1,0 +1,9 @@
+PySide6>=6.6
+numpy
+scipy
+shapely>=2.0
+manifold3d
+svgelements
+trimesh
+matplotlib
+Pillow

@@ -1,0 +1,101 @@
+name: Build
+
+# Tests on Linux, then single-file Windows exes (Dicegrove.exe + dicemaker.exe).
+# Every run uploads the exes as an artifact; a pushed tag v* also attaches them to a release.
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed to create the release on tags
+
+jobs:
+  test:
+    name: Tests (Linux)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Engine copy is in sync
+        run: |
+          cmp dicemaker.py Dicegrove/dicegrove/engine.py || {
+            echo "::error::Dicegrove/dicegrove/engine.py differs from dicemaker.py - copy dicemaker.py over it"
+            exit 1
+          }
+      - name: Engine checks (all dice, watertight, no overlaps)
+        run: python tests/verify.py
+      - name: App core tests
+        working-directory: Dicegrove
+        run: python -m unittest tests.test_core
+
+  windows:
+    name: Windows exe
+    needs: test
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt pyinstaller
+
+      - name: Build dicemaker.exe (command line)
+        run: pyinstaller --noconfirm packaging/dicemaker.spec
+      - name: Build Dicegrove.exe (app)
+        run: pyinstaller --noconfirm packaging/dicegrove.spec
+
+      - name: Smoke test dicemaker.exe
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory smoke | Out-Null
+          Set-Location smoke
+          # coin with H / T labels, then the bundled example d6
+          ..\dist\dicemaker.exe --coin --svgs --no-preview
+          if ($LASTEXITCODE -ne 0) { throw "coin build failed" }
+          ..\dist\dicemaker.exe
+          if ($LASTEXITCODE -ne 0) { throw "example d6 build failed" }
+          foreach ($f in "out\coin\dice_coin_orca_bambu.3mf", "out\d6\dice_d6_prusa.3mf", "out\d6\preview.png") {
+            if (-not (Test-Path $f)) { throw "missing $f" }
+          }
+          Get-ChildItem out -Recurse | Select-Object FullName, Length
+
+      - name: Self-test Dicegrove.exe (loads the UI and builds one die)
+        shell: pwsh
+        timeout-minutes: 10
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          $job = Join-Path $env:RUNNER_TEMP "smoke.dicejob"
+          python packaging/make_smoke_job.py $job
+          $env:DICEGROVE_SELFTEST = Join-Path $env:RUNNER_TEMP "selftest.txt"
+          $p = Start-Process -FilePath dist\Dicegrove.exe -ArgumentList "`"$job`"" -PassThru -Wait
+          if (Test-Path $env:DICEGROVE_SELFTEST) { Get-Content $env:DICEGROVE_SELFTEST }
+          else { throw "no self-test report written" }
+          if ($p.ExitCode -ne 0) { throw "self-test failed (exit $($p.ExitCode))" }
+          if (-not (Test-Path examples\d6_d6\dice_d6_orca_bambu.3mf)) { throw "the app did not write the die" }
+
+      - name: Upload exes
+        uses: actions/upload-artifact@v4
+        with:
+          name: dicegrove-windows
+          path: dist/*.exe
+          if-no-files-found: error
+
+      - name: Attach to release (tags v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.exe
+          generate_release_notes: true

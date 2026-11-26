@@ -1,0 +1,317 @@
+{
+  "app_name": "Dicegrove",
+  "app_id": "dicegrove",
+  "comment": "Multi-color inlay dice and coins for 3D printing from SVG artwork",
+  "generic_name": "Dice Maker",
+  "categories": "Graphics;",
+  "keywords": "dice;d20;d6;coin;3d print;svg;inlay;multicolor;3mf;stl;",
+  "mimetypes": "image/svg+xml;",
+  "script": "../dicemaker.py",
+  "kind": "python",
+  "supported": [
+    ".svg"
+  ],
+  "accept_dirs": false,
+  "option_defaults": {
+    "dieType": 6,
+    "sizeMm": 0,
+    "coinThickness": 3.0,
+    "depthMm": 0.4,
+    "maxColors": 4,
+    "coreShares": true,
+    "coreColorIndex": 1,
+    "thinDetails": "merge",
+    "minFeatureMm": 0.4,
+    "edges": "minkowski",
+    "roundingMm": 1.0,
+    "imageScale": 90,
+    "fitTo": "content",
+    "uniformScale": false,
+    "whiteBackground": false,
+    "faceMarginMm": 0.5,
+    "layerHeightMm": 0.2,
+    "palette": "",
+    "writeStl": true,
+    "write3mf": true,
+    "writePreview": true
+  },
+  "options": [
+    {
+      "key": "dieType",
+      "type": "enum",
+      "values": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        20
+      ],
+      "labels": [
+        "Coin",
+        "d4",
+        "d6",
+        "d8",
+        "d10",
+        "d12",
+        "d20"
+      ],
+      "control": "segmented",
+      "placement": "header",
+      "title": "Die type"
+    },
+    {
+      "key": "sizeMm",
+      "type": "float",
+      "range": [
+        0,
+        60
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Size (0 = typical)"
+    },
+    {
+      "key": "coinThickness",
+      "type": "float",
+      "range": [
+        2,
+        6
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Coin thickness"
+    },
+    {
+      "key": "depthMm",
+      "type": "float",
+      "range": [
+        0.2,
+        1.2
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Inlay depth"
+    },
+    {
+      "key": "maxColors",
+      "type": "int",
+      "range": [
+        1,
+        8
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Max colors"
+    },
+    {
+      "key": "coreShares",
+      "type": "bool",
+      "control": "segmented",
+      "placement": "settings",
+      "title": "Core color"
+    },
+    {
+      "key": "coreColorIndex",
+      "type": "int",
+      "range": [
+        1,
+        8
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Core shares color no."
+    },
+    {
+      "key": "thinDetails",
+      "type": "enum",
+      "values": [
+        "merge",
+        "remove",
+        "keep"
+      ],
+      "control": "segmented",
+      "placement": "settings",
+      "title": "Thin details"
+    },
+    {
+      "key": "minFeatureMm",
+      "type": "float",
+      "range": [
+        0,
+        0.8
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Min feature width"
+    },
+    {
+      "key": "edges",
+      "type": "enum",
+      "values": [
+        "none",
+        "minkowski",
+        "sphere"
+      ],
+      "labels": [
+        "Sharp",
+        "Rounded",
+        "Classic"
+      ],
+      "control": "segmented",
+      "placement": "settings",
+      "title": "Edges"
+    },
+    {
+      "key": "roundingMm",
+      "type": "float",
+      "range": [
+        0.2,
+        3
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Rounding radius"
+    },
+    {
+      "key": "imageScale",
+      "type": "int",
+      "range": [
+        50,
+        100
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Image size"
+    },
+    {
+      "key": "fitTo",
+      "type": "enum",
+      "values": [
+        "content",
+        "viewbox"
+      ],
+      "labels": [
+        "Drawing",
+        "Page"
+      ],
+      "control": "segmented",
+      "placement": "settings",
+      "title": "Fit to"
+    },
+    {
+      "key": "uniformScale",
+      "type": "bool",
+      "control": "switch",
+      "placement": "settings",
+      "title": "Same scale for all SVGs"
+    },
+    {
+      "key": "whiteBackground",
+      "type": "bool",
+      "control": "switch",
+      "placement": "settings",
+      "title": "White = background"
+    },
+    {
+      "key": "faceMarginMm",
+      "type": "float",
+      "range": [
+        0,
+        2
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Face margin"
+    },
+    {
+      "key": "layerHeightMm",
+      "type": "float",
+      "range": [
+        0.08,
+        0.32
+      ],
+      "control": "slider",
+      "placement": "settings",
+      "title": "Layer height (warning only)"
+    },
+    {
+      "key": "palette",
+      "type": "text",
+      "control": "textfield",
+      "placement": "settings",
+      "title": "Filament palette"
+    },
+    {
+      "key": "writeStl",
+      "type": "bool",
+      "control": "switch",
+      "placement": "settings",
+      "title": "Write STLs"
+    },
+    {
+      "key": "write3mf",
+      "type": "bool",
+      "control": "switch",
+      "placement": "settings",
+      "title": "Write 3MF"
+    },
+    {
+      "key": "writePreview",
+      "type": "bool",
+      "control": "switch",
+      "placement": "settings",
+      "title": "Write preview"
+    }
+  ],
+  "py_deps": [
+    "numpy",
+    "scipy",
+    "shapely",
+    "manifold3d",
+    "svgelements",
+    "trimesh",
+    "matplotlib",
+    "PIL"
+  ],
+  "py_requirements": [
+    "numpy",
+    "scipy",
+    "shapely>=2.0",
+    "manifold3d",
+    "svgelements",
+    "trimesh",
+    "matplotlib",
+    "Pillow"
+  ],
+  "tool_checks": [],
+  "features": {
+    "history": false,
+    "delete": false,
+    "retry": true,
+    "previews": true,
+    "mascot": "pixel",
+    "notify": true
+  },
+  "drop": {
+    "title": "Drop SVGs on the faces",
+    "hover": "Release to fill the faces",
+    "hint": "One SVG per face; empty faces get their number",
+    "glyph": "⚄",
+    "file_dialog_title": "Choose SVG artwork",
+    "file_filter": "SVG images (*.svg)",
+    "nothing_msg": "No SVG files found",
+    "working_label": "FORGING",
+    "done_title": "Your dice are ready!"
+  },
+  "look": {
+    "background": "shader",
+    "concept": "tumbling polyhedra: wireframe d20/d6/d8 edges rotating over dice-tray felt",
+    "mood": "arcane: deep purple + magenta + gold"
+  },
+  "readme_body": "",
+  "install": "user",
+  "generated": "2026-11-26 03:04",
+  "droopy_version": 1
+}

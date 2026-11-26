@@ -1,0 +1,11 @@
+# Dice engine (dicemaker.py)
+numpy
+scipy
+shapely>=2.0
+manifold3d
+svgelements
+trimesh
+matplotlib
+Pillow
+# Dicegrove app (GUI)
+PySide6>=6.5

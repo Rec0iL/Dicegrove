@@ -1,0 +1,18 @@
+# generated dice
+out/
+*_d4/
+*_d6/
+*_d8/
+*_d10/
+*_d12/
+*_d20/
+*_coin/
+# python / build
+__pycache__/
+*.pyc
+build/
+dist/
+.venv/
+venv/
+# local working notes
+tasks/
